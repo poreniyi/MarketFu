@@ -1,4 +1,7 @@
 const getData=require('../expressApp/fetch.js').getData;
+const fs=require('fs');
+const path=require('path');
+const https=require('https');
 
 
 
@@ -25,11 +28,6 @@ module.exports={
     }
 }
 
-sayHi=(message)=>{
-    console.log(`sayhi command triggered`);
-    message.react("🛒");
-}
-
 buy=(message,args)=>{
     const filter=(reaction,user)=>{
         return reaction.emoji.name==='🛒' && user.id===message.author.id;
@@ -40,8 +38,25 @@ buy=(message,args)=>{
         message.react('✅');
         console.log(`User ${user.tag} reacted with shoppingcart`);
     })
-
+    if(message.attachments.size>0){
+        saveImage(message.id,message.attachments);
+    }
 }
+
+
+saveImage=(id,attachments)=>{
+    attachments.forEach(element => {
+        if(element.name.endsWith('.png')||element.name.endsWith('.jpg')){
+            let end=element.name.endsWith('.png') ? '.png' : '.jpg';
+            let filePath=path.join(__dirname,"..",'Images',`${id}.${end}`);
+            let localPath=fs.createWriteStream(filePath);
+            let request=https.get(element.url,(response)=>{
+                response.pipe(localPath);
+            })
+        }
+    });
+}
+
 
 priceRegex=(string)=>{
     string=string.replace(/[.,]/gm,'');
