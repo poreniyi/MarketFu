@@ -8,7 +8,6 @@ getData=async (lvl,price)=>{
     let data=await fs.promises.readFile(file,'utf8');
     let parsedData=JSON.parse(data);
     lvl-=14;
-    console.log(lvl);
     const lvlFilter=(items)=>{
         return lvl<=items.LVL;
     }
