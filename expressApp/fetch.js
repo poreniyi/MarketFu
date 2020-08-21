@@ -70,25 +70,6 @@ makeDummyData=()=>{
 }
 //makeDummyData();
 
-priceRegex=(string)=>{
-    string=string.replace(/[.,]/gm,'');
-    let result;
-    let justNumbers=/\d+/;
-    let millions=/\d+m|mk/;
-    let thousands=/\d+k/;
-    let thousandszK=/\d+kk/;
-    if(millions.test(string)){
-        console.log(`million at end`);
-      result=1000000 * parseInt(string.match(millions)[0]);
-    }else if (thousands.test(string)){
-        console.log(`k at end`);
-        result=1000 * parseInt(string.match(thousands)[0]);
-    }else if(justNumbers.test(string)){
-        result=parseInt(string);
-    }
-    result =result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    
-    console.log(`${result} kamas`);
-
+module.exports={
+    getItemData:getData,
 }
-//priceRegex('1k');
