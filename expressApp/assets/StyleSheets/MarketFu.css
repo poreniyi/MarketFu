@@ -1,6 +1,4 @@
 #itemTable{
-    color:red;
-    background-color: blue;
     border-collapse: collapse;
 }
 #itemTable, th, td{
