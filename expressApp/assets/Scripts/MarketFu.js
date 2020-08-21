@@ -2,6 +2,7 @@ let table=document.getElementById('itemTable');
 let price=document.getElementById('Price');
 let LVL=document.getElementById("LVL");
 let columns=[...document.querySelectorAll('.column')];
+const search= document.querySelector('#search');
 
 makeRequest=async()=>{
     let response= await fetch('/getItems');
@@ -88,3 +89,25 @@ sortColumns=(sign,place)=>{
         }
     }
 }   
+console.log(search);
+search.addEventListener('input', (e)=>{
+    let filter=search.value.toLowerCase();
+    let rows=table.rows;
+    let td;
+    for(let i=1 ;i<rows.length;i++){
+        let tableRow=rows[i];
+        td=tableRow.cells[0];
+        console.log(td);
+        if(td){
+            let textValue=td.textContent.toLowerCase();
+            console.log(textValue);
+            if(textValue.indexOf(filter)>-1){
+                tableRow.style.display='';
+            }else{
+                tableRow.style.display='none';
+            }
+        }
+    }
+})
+
+let string="orange"
