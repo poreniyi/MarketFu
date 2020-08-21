@@ -3,7 +3,6 @@ const app=express();
 const port=3000;
 const path=require('path');
 let assetPath=path.join(__dirname, './assets');
-console.log(assetPath);
 app.use('/assets',express.static(assetPath));
 // const fetch=require('';)
 app.set('views', path.join(__dirname,'./views'));
@@ -18,7 +17,6 @@ app.get('/',(req,res)=>{
 app.get('/getItems',async (req,res)=>{
     const getItemData=require('./fetch.js').getItemData;
     let items=await getItemData(1);
-    console.log('getItems triggered',items);
     res.send(items);
 })
 
