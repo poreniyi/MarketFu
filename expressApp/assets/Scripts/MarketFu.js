@@ -2,16 +2,12 @@ let table=document.getElementById('itemTable');
 let price=document.getElementById('Price');
 let LVL=document.getElementById("LVL");
 let columns=[...document.querySelectorAll('.column')];
-console.log(columns);
-console.log(LVL,price);
-console.log(table);
 
 makeRequest=async()=>{
     let response= await fetch('/getItems');
     if(response.ok){
-        console.log(response);
         let json=await response.json();
-        console.log('reponse was ok',json);
+        console.log('reponse was ok');
         addItemsToTable(json);
     }
 }
@@ -42,13 +38,29 @@ addItemsToTable=(list)=>{
 }
 
 columns.forEach(column=>{
+    let changed=false;
+    let upArrow='\u25B2';
+    let downArrow='\u25BC';
     column.addEventListener('click',(e)=>{
-        sortColumns();
+        if(changed==false){
+            column.textContent+=upArrow;
+            changed=true;
+        }
+        if(column.textContent.endsWith(upArrow)){
+            column.textContent=column.textContent.slice(0,-1)+downArrow;
+        }
+        else{
+            column.textContent=column.textContent.slice(0,-1)+upArrow;
+        }
+        let isAscending=column.textContent.endsWith(upArrow) ? false: true;
+        let value = column.id=='LVL' ? 1:2;
+        console.log(value);
+        sortColumns(isAscending,value);
     })
     
 })
 
-sortColumns=()=>{
+sortColumns=(sign,place)=>{
     let  rows, switching, i, x, y, shouldSwitch;
      switching=true;
      rows=table.rows;
@@ -56,14 +68,19 @@ sortColumns=()=>{
         switching=false;
         for( i=1;i< rows.length-1;i++){
             shouldSwitch=false
-             x=rows[i].cells[1].textContent;
-             y=rows[i+1].cells[1].textContent;
-            console.log(`x:${x} y:${y}`);
-            if(Number(x)>Number(y)){
-                console.log(`${x} is bigger than y ${y}`);
-                shouldSwitch=true;
-                break;
-            }
+             x=rows[i].cells[place].textContent;
+             y=rows[i+1].cells[place].textContent;
+            if (sign){
+                if(Number(x)<Number(y)){
+                    shouldSwitch=true;
+                    break;
+                }
+            }else{
+                if(Number(x)>Number(y)){
+                    shouldSwitch=true;
+                    break;
+                }
+            }  
         }
         if (shouldSwitch){
             rows[i].parentNode.insertBefore(rows[i+1],rows[i]);
