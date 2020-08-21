@@ -1,1 +1,1 @@
-{"items":[{"name":"Orange","price":200,"LVL":126},{"name":1,"price":200,"LVL":138},{"name":1,"price":200,"LVL":198},{"name":1,"price":200,"LVL":198},{"name":1,"price":200,"LVL":198},{"name":1,"price":200,"LVL":198},{"name":1,"price":200,"LVL":198}]}
+{"items":[{"name":"Orange","price":200,"LVL":126},{"name":"goldCroc","price":200,"LVL":58},{"name":1,"price":200,"LVL":198},{"name":"goldCroc","price":200,"LVL":158},{"name":1,"price":200,"LVL":198},{"name":1,"price":200,"LVL":198},{"name":1,"price":200,"LVL":198}]}
