@@ -5,7 +5,9 @@ let columns=[...document.querySelectorAll('.column')];
 const search= document.querySelector('#search');
 let pageButtons=[...document.querySelectorAll('.PageButtons')];
 let pageText=document.getElementById('pageText');
-let page=1;
+let page=document.getElementById('pageNumber');
+let totalPages=document.getElementById('totalPages');
+page.textContent=1;
 let tableRows=[];
 let itemsPerPage=3;
 
@@ -40,9 +42,18 @@ addItemsToTable=(list)=>{
         if(element.image){
             image.textContent=element.name;
         }
+        let imageObject=document.createElement('IMG');
+        let imgSrc1='https://cdn.discordapp.com/attachments/744256656837312592/746091636630618152/unknown.png'
+        let imgSrc2='https://cdn.discordapp.com/attachments/527875131360673793/746786387323519017/unknown.png'
+        imageObject.src=imgSrc1;
+        imageObject.class='tabileImages';
+        imageObject.style.height='100%';
+        //imageObject.style.width='100%';
+        image.appendChild(imageObject);
+        image.classList.add('imageCells');
     });
-    let totalPages=Math.ceil(tableRows.length/itemsPerPage);
-    pageText.textContent=`Page 1 of ${totalPages} total items(${tableRows.length})`;
+    let totalPageLength=Math.ceil(tableRows.length/itemsPerPage);
+    totalPages.textContent=totalPageLength;
     for (let i=0;i<tableRows.length;i++){
         if(i<=itemsPerPage-1){
             continue;
@@ -122,24 +133,26 @@ search.addEventListener('input', (e)=>{
 
 pageButtons.forEach(button=>{
     button.addEventListener('click',()=>{
+        let pageNumber=Number(page.textContent);
+        let newPageNumber;
         let increment= button.textContent=='Previous' ? -1:1;
-        console.log(increment+page);
-        if(increment+page<=Math.ceil(tableRows.length/itemsPerPage) && increment+page>0){
-            console.log(`if bracket`);
-            page+=increment;
-            pageText.textContent=`Page ${page}of ${tableRows.length}`;
-            let lowerLimit=((page-1)*itemsPerPage)-1;
+        newPageNumber=increment+pageNumber;
+        console.log(`New page number is ${newPageNumber}`);
+        let maxPage=Math.ceil(tableRows.length/itemsPerPage);
+        if(newPageNumber<=maxPage && newPageNumber>0){
+            console.log(`Maximum Page  number is ${maxPage}`);
+            pageNumber+=increment;
+            let lowerLimit=((pageNumber-1)*itemsPerPage)-1;
             let upperLimit=lowerLimit+itemsPerPage;
             console.log(lowerLimit,upperLimit);
-            console.log(tableRows.length);
             for(let i=0;i<tableRows.length;i++){
                 if(i>lowerLimit&&i<=upperLimit){
-                    console.log(`I am i the range`);
                     tableRows[i].style.display='';
                 }else{
                     tableRows[i].style.display='none';
                 }
             }
+            page.textContent=pageNumber;
         }
     })
 })
