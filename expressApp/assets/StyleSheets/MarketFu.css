@@ -4,3 +4,8 @@
 #itemTable, th, td{
     border: 1px solid black;
 }
+
+.imageCells{
+    height:100px;
+    width:50px;
+}
