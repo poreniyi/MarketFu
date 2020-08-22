@@ -3,6 +3,11 @@ let price=document.getElementById('Price');
 let LVL=document.getElementById("LVL");
 let columns=[...document.querySelectorAll('.column')];
 const search= document.querySelector('#search');
+let pageButtons=[...document.querySelectorAll('.PageButtons')];
+let pageText=document.getElementById('pageText');
+let page=1;
+let tableRows=[];
+let itemsPerPage=3;
 
 makeRequest=async()=>{
     let response= await fetch('/getItems');
@@ -31,11 +36,20 @@ addItemsToTable=(list)=>{
         name.textContent=element.name;
         lvl.textContent=element.LVL;
         price.textContent=element.price;
+        tableRows.push(row);
         if(element.image){
             image.textContent=element.name;
         }
-
     });
+    let totalPages=Math.ceil(tableRows.length/itemsPerPage);
+    pageText.textContent=`Page 1 of ${totalPages} total items(${tableRows.length})`;
+    for (let i=0;i<tableRows.length;i++){
+        if(i<=itemsPerPage-1){
+            continue;
+        }else{
+            tableRows[i].style.display='none';
+        }
+    }
 }
 
 columns.forEach(column=>{
@@ -55,7 +69,6 @@ columns.forEach(column=>{
         }
         let isAscending=column.textContent.endsWith(upArrow) ? false: true;
         let value = column.id=='LVL' ? 1:2;
-        console.log(value);
         sortColumns(isAscending,value);
     })
     
@@ -89,7 +102,6 @@ sortColumns=(sign,place)=>{
         }
     }
 }   
-console.log(search);
 search.addEventListener('input', (e)=>{
     let filter=search.value.toLowerCase();
     let rows=table.rows;
@@ -97,10 +109,8 @@ search.addEventListener('input', (e)=>{
     for(let i=1 ;i<rows.length;i++){
         let tableRow=rows[i];
         td=tableRow.cells[0];
-        console.log(td);
         if(td){
             let textValue=td.textContent.toLowerCase();
-            console.log(textValue);
             if(textValue.indexOf(filter)>-1){
                 tableRow.style.display='';
             }else{
@@ -110,4 +120,26 @@ search.addEventListener('input', (e)=>{
     }
 })
 
-let string="orange"
+pageButtons.forEach(button=>{
+    button.addEventListener('click',()=>{
+        let increment= button.textContent=='Previous' ? -1:1;
+        console.log(increment+page);
+        if(increment+page<=Math.ceil(tableRows.length/itemsPerPage) && increment+page>0){
+            console.log(`if bracket`);
+            page+=increment;
+            pageText.textContent=`Page ${page}of ${tableRows.length}`;
+            let lowerLimit=((page-1)*itemsPerPage)-1;
+            let upperLimit=lowerLimit+itemsPerPage;
+            console.log(lowerLimit,upperLimit);
+            console.log(tableRows.length);
+            for(let i=0;i<tableRows.length;i++){
+                if(i>lowerLimit&&i<=upperLimit){
+                    console.log(`I am i the range`);
+                    tableRows[i].style.display='';
+                }else{
+                    tableRows[i].style.display='none';
+                }
+            }
+        }
+    })
+})
