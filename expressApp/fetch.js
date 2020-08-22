@@ -27,37 +27,13 @@ module.exports={
     getData:getData,
 }
 
-makeDummyData=()=>{
+makeDummyData=async()=>{
     let file=path.join(__dirname,"example.txt");
     let exampleWriter=fs.createWriteStream(file,'utf8');
+ 
     let items=[
         {
-            name:1,
-            price:200,
-            LVL:126,
-        },
-        {
-            name:1,
-            price:200,
-            LVL:138,
-        },  {
-            name:1,
-            price:200,
-            LVL:198,
-        },  {
-            name:1,
-            price:200,
-            LVL:198,
-        },  {
-            name:1,
-            price:200,
-            LVL:198,
-        },  {
-            name:1,
-            price:200,
-            LVL:198,
-        },  {
-            name:1,
+            name:Item,
             price:200,
             LVL:198,
         },
@@ -66,10 +42,26 @@ makeDummyData=()=>{
         items:items,
     }
     let writeData=JSON.stringify(obj);
-    exampleWriter.write(writeData);
+    //exampleWriter.write(writeData);
 }
 //makeDummyData();
 
+addDummyData=async()=>{
+    let file=path.join(__dirname,"example.txt");
+    let exampleWriter=fs.createWriteStream(file,{flags:'a',encoding:'utf8'});
+    let oldData=await fs.promises.readFile(file,'utf8');
+    let parsedOldData=JSON.parse(await fs.promises.readFile(file,'utf8'));
+    let newStuff=[
+        {
+            name:Item,
+            price:200,
+            LVL:198,
+        },
+    ]
+    console.log(parsedOldData);
+    
+}
+//addDummyData();
 module.exports={
     getItemData:getData,
 }
