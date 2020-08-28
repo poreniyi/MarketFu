@@ -5,9 +5,12 @@ const client = new Discord.Client();
 client.login(config.BOT_TOKEN);
 client.commands= new Discord.Collection();
 const commandFiles=fs.readdirSync('./commands').filter(file=>file.endsWith('.js'));
+const app=require('../MarketFu/expressApp/index');
+
 client.on(`ready`,()=>{
     console.log(`Bot logged in and ready for use`);
 })
+app.startServer();
 
 const prefix='!';
 
